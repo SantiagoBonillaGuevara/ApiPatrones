@@ -43,4 +43,26 @@ jobs:
         run: |
           docker push ${{ env.DOCKER_USERNAME }}/app1:latest
           docker push ${{ env.DOCKER_USERNAME }}/app1:${{ github.run_number }}
-
+          
+  update-helm-chart:
+    runs-on: ubuntu-latest
+    needs: build  # Espera a que termine el job `build`
+  
+    steps:
+      - name: Clonar el repo del Helm Chart
+        uses: actions/checkout@v3
+        with:
+          repository: SantiagoBonillaGuevara/app1-chart
+          token: ${{ secrets.HELM_REPO_TOKEN }}
+  
+      - name: Modificar el `values.yaml` con la nueva imagen
+        run: |
+          sed -i "s/tag: \"[0-9]*\"/tag: \"${{ github.run_number }}\"/" values.yaml
+  
+      - name: Hacer commit y push
+        run: |
+          git config --global user.email "bot@github.com"
+          git config --global user.name "GitHub Actions Bot"
+          git add values.yaml
+          git commit -m "Update image tag to ${{ github.run_number }}"
+          git push origin main
