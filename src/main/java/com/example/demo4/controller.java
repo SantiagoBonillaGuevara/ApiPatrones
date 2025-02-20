@@ -26,7 +26,7 @@ public class controller {
     @GetMapping("/")
     public String index() {
         log.info("estoy saludando");
-        return "Greetings from Spring Boot!";
+        return "Saludo desde otro tag:)))";
     }
 
     @PostMapping("/save")
