@@ -52,7 +52,7 @@ jobs:
       - name: Clonar el repo del Helm Chart
         uses: actions/checkout@v3
         with:
-          repository: SantiagoBonillaGuevara/app1-chart
+          repository: Lufe04/Helm_Repo
           token: ${{ secrets.HELM_REPO_TOKEN }}
   
       - name: Modificar el `values.yaml` con la nueva imagen
