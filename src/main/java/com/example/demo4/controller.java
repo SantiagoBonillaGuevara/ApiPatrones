@@ -26,7 +26,9 @@ public class controller {
     @GetMapping("/")
     public String index() {
         log.info("estoy saludando");
-        return "Saludare una vez mas por si las moscas";
+        log.info("estoy saludando");
+        log.info("estoy saludando");
+        return "Esta es la prueba para el ArgoCD 2";
     }
 
     @PostMapping("/save")
@@ -45,6 +47,7 @@ public class controller {
 
     @GetMapping("/getNames")
     public List<String> getNames() {
+        log.info("obtener nombres"+service.getAllNames());
         log.info("obtener nombres"+service.getAllNames());
         return service.getAllNames();
     }
