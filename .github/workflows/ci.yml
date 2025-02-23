@@ -58,8 +58,14 @@ jobs:
 
       - name: Extraer Helm Chart
         run: |
-          mkdir -p chart && tar -xzf helm-app1-*.tgz -C chart
-          ls -l chart
+          mkdir -p chart
+          TAR_FILE=$(find . -name "*.tgz" | head -n 1)  # Encuentra el .tgz automáticamente
+          if [[ -f "$TAR_FILE" ]]; then
+            tar -xzf "$TAR_FILE" -C chart
+          else
+            echo "Error: No se encontró ningún archivo .tgz"
+            exit 1
+          fi
 
       - name: Modificar values.yaml
         run: |
