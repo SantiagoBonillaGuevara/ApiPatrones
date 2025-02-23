@@ -28,7 +28,7 @@ public class controller {
         log.info("estoy saludando");
         log.info("estoy saludando");
         log.info("estoy saludando");
-        return "Esta es la prueba para el ArgoCD 2";
+        return "Esta es la prueba para el ArgoCD 3";
     }
 
     @PostMapping("/save")
