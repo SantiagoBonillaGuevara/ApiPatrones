@@ -80,7 +80,7 @@ jobs:
 
       - name: Reempaquetar Helm Chart
         run: |
-          helm package chart/helm-app1
+          helm package chart/app1-chart
 
       - name: Actualizar index.yaml
         run: |
