@@ -69,8 +69,14 @@ jobs:
 
       - name: Modificar values.yaml
         run: |
-          yq e '.image.tag = "6"' -i chart/helm-app1/values.yaml
-          yq e '.replicaCount = 2' -i chart/helm-app1/values.yaml
+          VALUES_FILE="chart/app1-chart/values.yaml"
+          if [[ -f "$VALUES_FILE" ]]; then
+            yq eval -i '.image.tag = "6"' "$VALUES_FILE"
+            yq eval -i '.replicaCount = 2' "$VALUES_FILE"
+          else
+            echo "Error: No se encontró values.yaml"
+            exit 1
+          fi
 
       - name: Reempaquetar Helm Chart
         run: |
