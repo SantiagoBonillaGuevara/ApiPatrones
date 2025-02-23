@@ -71,7 +71,8 @@ jobs:
         run: |
           VALUES_FILE="chart/app1-chart/values.yaml"
           if [[ -f "$VALUES_FILE" ]]; then
-            yq -y -i '.image.tag = "6"' "$VALUES_FILE"
+            IMAGE_TAG="${{ github.run_number }}"
+            yq -y -i ".image.tag = \"${IMAGE_TAG}\"" "$VALUES_FILE"
             yq -y -i '.replicaCount = 2' "$VALUES_FILE"
           else
             echo "Error: No se encontró values.yaml"
