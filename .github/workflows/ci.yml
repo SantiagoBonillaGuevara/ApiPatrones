@@ -90,7 +90,17 @@ jobs:
         run: |
           git config --global user.email "luisacarpintero01@gmail.com"
           git config --global user.name "GitHub Actions"
-          git pull origin main --rebase  # Evita conflictos si hay cambios remotos
+          
+          # Guardar cambios no confirmados para evitar errores en pull
+          git stash
+          
+          # Actualizar la rama con los últimos cambios remotos
+          git pull origin main --rebase
+          
+          # Restaurar cambios guardados en stash (si existían)
+          git stash pop || echo "No hay cambios guardados en stash"
+
+          # Agregar y subir cambios
           git add .
           git commit -m "Update values.yaml and repackage Helm chart"
           git push origin main
