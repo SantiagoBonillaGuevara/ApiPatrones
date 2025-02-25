@@ -50,6 +50,7 @@ jobs:
           repository: Lufe04/Helm_Repo
           token: ${{ secrets.HELM_REPO_TOKEN }}
           fetch-depth: 0  # Permite hacer push
+          ref: gh-pages  
 
       - name: Extraer Helm Chart
         run: |
@@ -93,7 +94,7 @@ jobs:
           git stash
           
           # Actualizar la rama con los últimos cambios remotos
-          git pull origin main --rebase
+          git pull origin gh-pages --rebase
           
           # Restaurar cambios guardados en stash (si existían)
           git stash pop || echo "No hay cambios guardados en stash"
@@ -101,5 +102,5 @@ jobs:
           # Agregar y subir cambios
           git add .
           git commit -m "Update values.yaml and repackage Helm chart"
-          git push origin main
+          git push origin gh-pages
 
