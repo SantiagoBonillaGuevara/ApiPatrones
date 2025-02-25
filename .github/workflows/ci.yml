@@ -98,9 +98,11 @@ jobs:
           
           # Restaurar cambios guardados en stash (si existían)
           git stash pop || echo "No hay cambios guardados en stash"
+          
+          COMMIT_NUMBER=$(date +"%Y%m%d%H%M%S")
 
           # Agregar y subir cambios
           git add .
-          git commit -m "Update values.yaml and repackage Helm chart"
+          git commit -m "Update values.yaml and repackage Helm chart #$COMMIT_NUMBER"
           git push origin gh-pages
 
