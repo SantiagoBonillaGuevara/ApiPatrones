@@ -85,7 +85,7 @@ jobs:
 
       - name: Actualizar index.yaml
         run: |
-          helm repo index --merge index.yaml --url https://Lufe04.github.io/Helm_Repo/charts .
+          helm repo index --merge index.yaml --url https://github.com/Lufe04/Helm_Repo/tree/main/charts .
 
       - name: Subir cambios al repo
         run: |
