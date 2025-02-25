@@ -51,11 +51,6 @@ jobs:
           token: ${{ secrets.HELM_REPO_TOKEN }}
           fetch-depth: 0  # Permite hacer push
 
-      - name: Instalar dependencias
-        run: |
-          sudo apt-get update && sudo apt-get install -y yq
-          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
       - name: Extraer Helm Chart
         run: |
           mkdir -p chart
@@ -79,12 +74,14 @@ jobs:
             exit 1
           fi
 
-      - name: Reempaquetar Helm Chart
+      - name: Reempaquetar Helm Chart y moverlo a charts/
         run: |
-          helm package chart/app1-chart
-
-      - name: Actualizar index.yaml
+          mkdir -p charts
+          helm package chart/app1-chart -d charts/  # -d indica el directorio de destino
+      
+      - name: Actualizar index.yaml dentro de charts/
         run: |
+          cd charts/
           helm repo index --merge index.yaml --url https://github.com/Lufe04/Helm_Repo/tree/main/charts .
 
       - name: Subir cambios al repo
