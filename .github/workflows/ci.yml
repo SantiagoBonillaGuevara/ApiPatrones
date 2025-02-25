@@ -47,7 +47,7 @@ jobs:
       - name: Clonar el repo del Helm Chart
         uses: actions/checkout@v3
         with:
-          repository: Lufe04/Helm_Repo/charts
+          repository: Lufe04/Helm_Repo
           token: ${{ secrets.HELM_REPO_TOKEN }}
           fetch-depth: 0  # Permite hacer push
 
