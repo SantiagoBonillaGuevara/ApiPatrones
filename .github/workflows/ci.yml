@@ -44,25 +44,62 @@ jobs:
           docker push ${{ env.DOCKER_USERNAME }}/app1:latest
           docker push ${{ env.DOCKER_USERNAME }}/app1:${{ github.run_number }}
           
-  update-helm-chart:
-    runs-on: ubuntu-latest
-    needs: build  # Espera a que termine el job `build`
-  
-    steps:
       - name: Clonar el repo del Helm Chart
         uses: actions/checkout@v3
         with:
           repository: Lufe04/Helm_Repo
           token: ${{ secrets.HELM_REPO_TOKEN }}
-  
-      - name: Modificar el `values.yaml` con la nueva imagen
+          fetch-depth: 0  # Permite hacer push
+
+      - name: Extraer Helm Chart
         run: |
-          sed -i "s/tag: \"[0-9]*\"/tag: \"${{ github.run_number }}\"/" values.yaml
-  
-      - name: Hacer commit y push
+          mkdir -p chart
+          TAR_FILE=$(find . -name "*.tgz" | head -n 1)  # Encuentra el .tgz automáticamente
+          if [[ -f "$TAR_FILE" ]]; then
+            tar -xzf "$TAR_FILE" -C chart
+          else
+            echo "Error: No se encontró ningún archivo .tgz"
+            exit 1
+          fi
+
+      - name: Modificar values.yaml
         run: |
-          git config --global user.email "bot@github.com"
-          git config --global user.name "GitHub Actions Bot"
-          git add values.yaml
-          git commit -m "Update image tag to ${{ github.run_number }}"
+          VALUES_FILE="chart/app1-chart/values.yaml"
+          if [[ -f "$VALUES_FILE" ]]; then
+            IMAGE_TAG="${{ github.run_number }}"
+            yq e -i ".image.tag = \"${IMAGE_TAG}\"" "$VALUES_FILE"
+            yq e -i '.replicaCount = 2' "$VALUES_FILE"
+          else
+            echo "Error: No se encontró values.yaml"
+            exit 1
+          fi
+
+      - name: Reempaquetar Helm Chart y moverlo a charts/
+        run: |
+          mkdir -p charts
+          helm package chart/app1-chart -d charts/  # -d indica el directorio de destino
+      
+      - name: Actualizar index.yaml dentro de charts/
+        run: |
+          cd charts/
+          helm repo index --merge index.yaml --url https://github.com/Lufe04/Helm_Repo/tree/main/charts .
+
+      - name: Subir cambios al repo
+        run: |
+          git config --global user.email "luisacarpintero01@gmail.com"
+          git config --global user.name "GitHub Actions"
+          
+          # Guardar cambios no confirmados para evitar errores en pull
+          git stash
+          
+          # Actualizar la rama con los últimos cambios remotos
+          git pull origin main --rebase
+          
+          # Restaurar cambios guardados en stash (si existían)
+          git stash pop || echo "No hay cambios guardados en stash"
+
+          # Agregar y subir cambios
+          git add .
+          git commit -m "Update values.yaml and repackage Helm chart"
           git push origin main
+
