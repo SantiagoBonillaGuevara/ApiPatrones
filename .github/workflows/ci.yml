@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      DOCKER_USERNAME: "sbonilla284"
-      DOCKER_PASSWORD: "Admin123#"
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           
     steps:
       - name: Checkout código
