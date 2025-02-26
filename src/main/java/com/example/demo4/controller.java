@@ -28,7 +28,7 @@ public class controller {
         log.info("estoy saludando");
         log.info("estoy saludando");
         log.info("estoy saludando");
-        return "prueba ultima 2";
+        return "prueba ultima 3";
     }
 
     @PostMapping("/save")
