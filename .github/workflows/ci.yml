@@ -77,12 +77,12 @@ jobs:
 
       - name: Reempaquetar Helm Chart en root
         run: |
-          helm package chart/app1-chart  # Se generará en la raíz del repo
+          mkdir -p docs
+          helm package chart/app1-chart --destination docs/
       
       - name: Actualizar index.yaml en root
         run: |
-          helm repo index --merge index.yaml --url https://github.com/Lufe04/Helm_Repo/tree/gh-pages .
-
+          helm repo index docs/ --merge docs/index.yaml --url https://lufe04.github.io/Helm_Repo/
       - name: Subir cambios al repo
         run: |
           git config --global user.email "luisacarpintero01@gmail.com"
