@@ -83,6 +83,10 @@ jobs:
       - name: Actualizar index.yaml en root
         run: |
           helm repo index docs/ --merge docs/index.yaml --url https://lufe04.github.io/Helm_Repo/
+
+      - name: Forzar actualización de GitHub Pages con index.html
+        run: |
+          echo "<h1>Helm Repo</h1>" > docs/index.html
       - name: Subir cambios al repo
         run: |
           git config --global user.email "luisacarpintero01@gmail.com"
