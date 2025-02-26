@@ -83,7 +83,7 @@ jobs:
       - name: Actualizar index.yaml dentro de charts/
         run: |
           cd charts/
-          helm repo index --merge index.yaml --url https://github.com/Lufe04/Helm_Repo/tree/main/charts .
+          helm repo index --merge index.yaml --url https://github.com/Lufe04/Helm_Repo/tree/gh-pages/charts .
 
       - name: Subir cambios al repo
         run: |
@@ -98,8 +98,6 @@ jobs:
           
           # Restaurar cambios guardados en stash (si existían)
           git stash pop || echo "No hay cambios guardados en stash"
-          
-          COMMIT_NUMBER=$(date +"%Y%m%d%H%M%S")
 
           # Agregar y subir cambios
           git add .
