@@ -75,15 +75,13 @@ jobs:
             exit 1
           fi
 
-      - name: Reempaquetar Helm Chart y moverlo a charts/
+      - name: Reempaquetar Helm Chart en root
         run: |
-          mkdir -p charts
-          helm package chart/app1-chart -d charts/  # -d indica el directorio de destino
+          helm package chart/app1-chart  # Se generará en la raíz del repo
       
-      - name: Actualizar index.yaml dentro de charts/
+      - name: Actualizar index.yaml en root
         run: |
-          cd charts/
-          helm repo index --merge index.yaml --url https://github.com/Lufe04/Helm_Repo/tree/gh-pages/charts .
+          helm repo index --merge index.yaml --url https://github.com/Lufe04/Helm_Repo/tree/gh-pages .
 
       - name: Subir cambios al repo
         run: |
