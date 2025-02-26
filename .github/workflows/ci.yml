@@ -82,7 +82,7 @@ jobs:
       
       - name: Actualizar index.yaml en root
         run: |
-          helm repo index docs/ --merge docs/index.yaml --url https://lufe04.github.io/Helm_Repo/docs/
+          helm repo index docs/ --merge docs/index.yaml --url https://lufe04.github.io/Helm_Repo/
 
       - name: Subir cambios al repo
         run: |
