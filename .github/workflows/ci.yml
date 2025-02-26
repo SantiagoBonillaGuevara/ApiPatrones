@@ -84,15 +84,6 @@ jobs:
         run: |
           helm repo index docs/ --merge docs/index.yaml --url https://lufe04.github.io/Helm_Repo/docs/
 
-      - name: Eliminar index.html si existe
-        run: |
-          if [[ -f "docs/index.html" ]]; then
-            rm docs/index.html
-            echo "index.html eliminado"
-          else
-            echo "index.html no encontrado, no es necesario eliminarlo"
-          fi
-
       - name: Subir cambios al repo
         run: |
           git config --global user.email "luisacarpintero01@gmail.com"
